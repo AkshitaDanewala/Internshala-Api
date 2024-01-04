@@ -2,8 +2,21 @@ require("dotenv").config({path: "./.env"})
 const express = require("express")
 const app = express()
 
+
+//Database connection
+require("./Models/DatabaseModel.js").connectDatabase()
+
 const logger = require("morgan")
 app.use(logger("tiny"))
+
+
+//body parser
+
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+
+
+
 
 // Get Route
 app.use("/", require("./Routes/indexroute.js"))
