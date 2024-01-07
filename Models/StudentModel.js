@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-
+const bcrypt = require("bcryptjs")
 
 const StudentModel = new mongoose.Schema({
 
@@ -24,5 +24,20 @@ const StudentModel = new mongoose.Schema({
 
 )
 
+
+StudentModel.pre("save", function(){
+
+if(!this.isModified("password")){
+    return
+}
+
+    let salt = bcrypt.genSaltSync(10)
+    this.password = bcrypt.hashSync(this.password, salt)
+})
+
+
+StudentModel.methods.comparepassword = function(password){
+    return bcrypt.compareSync(password, this.password)
+}
 const studentData = mongoose.model("StudentData",  StudentModel )
 module.exports = studentData

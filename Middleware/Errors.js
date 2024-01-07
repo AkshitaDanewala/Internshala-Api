@@ -2,6 +2,12 @@ exports.GeneratedErrors = (err, req,res,next)=>{
 
 const statuscode = err.statuscode || 500
 
+
+if(err.name === "MongoServerError" && err.message.includes("E11000 duplicate key")){
+    err.message = "Student with this email address already exit"
+}
+
+
 res.status(statuscode).json({
     message: err.message,
     errName: err.name
