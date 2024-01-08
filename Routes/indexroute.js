@@ -1,9 +1,10 @@
 const express = require("express")
 const router = express.Router()
 const {homepage, studentsignup, studentsignin, studentsignout} = require("../Controllers/indexcontroller")
+const {isAuthenticated} = require("../Middleware/Auth.js")
 
 //GET / route
-router.get("/", homepage)
+router.get("/", isAuthenticated, homepage)
 
 
 //Post signup route
