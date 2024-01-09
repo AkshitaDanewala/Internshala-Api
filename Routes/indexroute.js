@@ -1,11 +1,13 @@
 const express = require("express")
 const router = express.Router()
-const {homepage, studentsignup, studentsignin, studentsignout} = require("../Controllers/indexcontroller")
+const {homepage, studentsignup, studentsignin, studentsignout, currentUser} = require("../Controllers/indexcontroller")
 const {isAuthenticated} = require("../Middleware/Auth.js")
 
 //GET / route
-router.get("/", isAuthenticated, homepage)
+router.get("/", homepage)
 
+//POST
+router.post("/student", isAuthenticated, currentUser )
 
 //Post signup route
 
@@ -17,7 +19,7 @@ router.post("/student/signin", studentsignin)
 
 
 //post signout route
-router.get("/student/signout", studentsignout)
+router.get("/student/signout",  isAuthenticated,  studentsignout)
 
 
 

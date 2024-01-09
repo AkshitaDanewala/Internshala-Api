@@ -8,6 +8,11 @@ exports.homepage = CatchAsyncError(async (req,res,next)=>{
     res.json({message: " Secure Homepage!"})
 } ) 
 
+exports.currentUser = CatchAsyncError(async (req,res,next)=>{
+    const student = await studentData.findById(req.id).exec()
+    res.json({ student })
+})
+
 
 exports.studentsignup = CatchAsyncError(async (req,res,next)=>{
 
@@ -18,16 +23,16 @@ exports.studentsignup = CatchAsyncError(async (req,res,next)=>{
 
 exports.studentsignin = CatchAsyncError(async (req,res,next)=>{
 
-    const User = await studentData.findOne({email: req.body.email})
+    const student = await studentData.findOne({email: req.body.email})
     .select("+password")
     .exec()
 
-if(!User) return next(new ErrorHandler("User not found with this email address", 404))
+if(!student) return next(new ErrorHandler("User not found with this email address", 404))
 
-const isMatch = User.comparepassword(req.body.password)
+const isMatch = student.comparepassword(req.body.password)
 if(!isMatch) return next( new ErrorHandler("Wrong Credentials", 500))
 
-SendToken(User, 200, res)
+SendToken(student, 200, res)
 
 
 } ) 

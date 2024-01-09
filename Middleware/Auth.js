@@ -14,6 +14,7 @@ return next(new ErrorHandler("Please login in to access the resource", 401))
 }
 
 const { id } = jwt.verify(token, process.env.JWT_SECRET)
-
-  res.json( id, token )
+req.id = id
+next()
+  // res.json({id, token})
 } )
