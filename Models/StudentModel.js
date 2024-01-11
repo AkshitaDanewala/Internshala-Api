@@ -4,12 +4,38 @@ const jwt = require("jsonwebtoken")
 
 const StudentModel = new mongoose.Schema({
 
-    username: String,
+firstname: {
+    type:String,
+    required: [true, "Firstname is Required"],
+    minlength: [3, "FirstName should be 3 characters long"],
+
+}, 
+lastname: {
+    type:String,
+    required: [true, "LastName is Required"],
+    minlength: [3, "LastName should be 3 characters long"],
+
+}, 
+avatar: String,
+contact: {
+    type:String,
+    required: [true, "Contact is Required"],
+    maxlength: [10, "Contact should not be  exceed 10 characters long"],
+    minlength: [10, "contact should 10 characters long"]
+
+
+}, 
+city:  {
+    type:String,
+    required: [true, "LastName is Required"],
+
+}, 
+gender: {type: String, enum: ["Male", "Female", "Other"]},
 
     email:{
         type:String,
         unique: true,
-        reuired: [true, "Email is Required"],
+        required: [true, "City is Required"],
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
     }, 
 

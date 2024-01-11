@@ -98,3 +98,13 @@ SendToken(student, 201, res)
 
  }) 
 
+
+ exports.studentupdate = CatchAsyncError(async (req,res,next)=>{
+
+      const student = await studentData.findByIdAndUpdate(req.params.id, req.body).exec()
+    res.status(200).json({
+        success: true,
+        message: "Student updated successfully",
+student
+    })
+} ) 
