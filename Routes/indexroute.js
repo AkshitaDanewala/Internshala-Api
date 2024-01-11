@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const {homepage, studentsignup, studentsignin, studentsignout, currentUser} = require("../Controllers/indexcontroller")
+const {homepage, studentsignup, studentsignin, studentsignout, currentUser,  studentsendmail, studentforgetlink, studentresetpassword} = require("../Controllers/indexcontroller")
 const {isAuthenticated} = require("../Middleware/Auth.js")
 
 //GET / route
@@ -22,8 +22,17 @@ router.post("/student/signin", studentsignin)
 router.get("/student/signout",  isAuthenticated,  studentsignout)
 
 
+//POST send-mail route
+router.post("/student/send-mail",   studentsendmail)
 
 
+//GET forget route
+router.get("/student/forget-link/:id",   studentforgetlink)
+
+
+// GET reset password route
+
+router.post("/student/reset-password/:id", isAuthenticated,  studentresetpassword)
 
 
 module.exports = router

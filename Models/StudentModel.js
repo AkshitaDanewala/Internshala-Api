@@ -20,6 +20,10 @@ const StudentModel = new mongoose.Schema({
        minlength: [5, "Password should not be less than 5 characters"]
     //    match"[]
 },
+resetpasswordToken: {
+    type: String,
+    default: "0"
+},
 },
 {timestamps: true}
 
