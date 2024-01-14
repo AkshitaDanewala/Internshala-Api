@@ -30,6 +30,11 @@ app.use(cookieparser())
 
 
 
+//expess file- upload
+const fileupload = require("express-fileupload")
+app.use(fileupload())
+
+
 
 // Get Route
 app.use("/", require("./Routes/indexroute.js"))

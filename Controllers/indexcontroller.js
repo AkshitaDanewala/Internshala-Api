@@ -4,6 +4,9 @@ const studentData = require("../Models/StudentModel")
 const ErrorHandler = require("../utils/ErrorHandler")
 const {SendToken} = require("../utils/SendToken")
 const {sendmail} = require("../utils/Nodemailer.js")
+const path = require("path")
+const imagekit = require("../utils/imagekit.js").initImagekit()
+
 
 exports.homepage = CatchAsyncError(async (req,res,next)=>{
     res.json({message: " Secure Homepage!"})
@@ -107,4 +110,19 @@ SendToken(student, 201, res)
         message: "Student updated successfully",
 student
     })
+} ) 
+
+
+
+exports. studentavatar = CatchAsyncError(async (req,res,next)=>{
+    const student = await studentData.findById(req.params.id).exec()
+const file = req.files.avatar
+const modifiedname = `resumebuilder-${Date.now()} ${path.extname(file.name)}`
+
+// const image = await imagekit.upload({file: file.data, filename: modifiedname})
+const image = await imagekit.upload({file: file.data})
+
+res.json({image})
+
+
 } ) 
