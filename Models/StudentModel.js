@@ -56,6 +56,29 @@ resetpasswordToken: {
     type: String,
     default: "0"
 },
+
+
+resume: {
+    education: [],
+    jobs: [],
+    internships: [],
+    responsibilities: [],
+    courses: [],
+    projects: [],
+    skills: [],
+    accomplishments: [],
+
+}
+
+
+
+
+
+
+
+
+
+
 },
 {timestamps: true}
 

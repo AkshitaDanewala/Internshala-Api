@@ -37,7 +37,9 @@ app.use(fileupload())
 
 
 // Get Route
-app.use("/", require("./Routes/indexroute.js"))
+app.use("/user", require("./Routes/indexroute.js"))
+app.use("/resume", require("./Routes/Resumeroute.js"))
+
 
 
 //Errors handler code
