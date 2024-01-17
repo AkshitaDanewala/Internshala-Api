@@ -5,6 +5,7 @@ const ErrorHandler = require("../utils/ErrorHandler")
 const {SendToken} = require("../utils/SendToken")
 const {sendmail} = require("../utils/Nodemailer.js")
 const path = require("path")
+const { userInfo } = require("os")
 const imagekit = require("../utils/imagekit.js").initImagekit()
 
 
@@ -117,12 +118,21 @@ student
 exports. studentavatar = CatchAsyncError(async (req,res,next)=>{
     const student = await studentData.findById(req.params.id).exec()
 const file = req.files.avatar
-const modifiedname = `resumebuilder-${Date.now()} ${path.extname(file.name)}`
+const modifiedFileName = `resumebuilder-${Date.now()}${path.extname(file.name)}`
 
-// const image = await imagekit.upload({file: file.data, filename: modifiedname})
-const image = await imagekit.upload({file: file.data})
+if(student.avatar.fileId !== ""){
+    await imagekit.deleteFile(student.avatar.fileId)
+}
 
-res.json({image})
+
+const {fileId, url} = await imagekit.upload({file: file.data, fileName: modifiedFileName })
+student.avatar = {fileId, url}
+await student.save()
+res.status(200).json({
+    success: true,
+    message: "Profile updated"
+})
+// res.json({ image })
 
 
 } ) 

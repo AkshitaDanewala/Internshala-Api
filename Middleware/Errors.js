@@ -10,6 +10,7 @@ if(err.name === "MongoServerError" && err.message.includes("E11000 duplicate key
 
 res.status(statuscode).json({
     message: err.message,
-    errName: err.name
+    errName: err.name,
+    stack: err.stack
 })
 }
