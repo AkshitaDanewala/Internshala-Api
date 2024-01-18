@@ -51,89 +51,89 @@ exports.employeesignout = CatchAsyncError(async (req,res,next)=>{
 } ) 
 
 
-// exports.studentsendmail = CatchAsyncError(async (req,res,next)=>{
+exports.employeesendmail = CatchAsyncError(async (req,res,next)=>{
 
-// const student = await studentData.findOne({email: req.body.email}).exec()
-// if(!student) return next(new ErrorHandler("User not found with this email address", 404));
+const employee = await employeeData.findOne({email: req.body.email}).exec()
+if(!employee) return next(new ErrorHandler("User not found with this email address", 404));
 
-// const url = `${req.protocol}://${req.get("host")}/student/forget-link/${student._id}`
+const url = `${req.protocol}://${req.get("host")}/employee/forget-link/${employee._id}`
 
-// sendmail(req,res, next, url)
+sendmail(req,res, next, url)
 
-// student.resetpasswordToken = "1"
-//  await student.save()
+employee.resetpasswordToken = "1"
+ await employee.save()
 
-//     res.json({student, url})
+    res.json({employee, url})
 
-//  } ) 
+ } ) 
 
 
-//  exports.studentforgetlink = CatchAsyncError(async (req,res,next)=>{
+ exports.employeeforgetlink = CatchAsyncError(async (req,res,next)=>{
 
-//     const student = await studentData.findById(req.params.id).exec()
+    const employee = await employeeData.findById(req.params.id).exec()
 
-//     if(!student) 
-//     return next(new ErrorHandler("User not found with this email address", 404));
+    if(!employee) 
+    return next(new ErrorHandler("User not found with this email address", 404));
     
 
-//     if(student.resetpasswordToken == "1"){
-//         student.resetpasswordToken = "0"
-//         student.password = req.body.password
-//         await student.save()
-//     } else{
-//     return next(new ErrorHandler("Invalid Reset Password Link Please try Again", 500));
+    if(employee.resetpasswordToken == "1"){
+        employee.resetpasswordToken = "0"
+        employee.password = req.body.password
+        await employee.save()
+    } else{
+    return next(new ErrorHandler("Invalid Reset Password Link Please try Again", 500));
 
-//     }
+    }
 
-//     res.status(200).json({message: "Password has been successfully Changed"})
-//  }) 
-
-
+    res.status(200).json({message: "Password has been successfully Changed"})
+ }) 
 
 
 
-//  exports. studentresetpassword = CatchAsyncError(async (req,res,next)=>{
 
-//     const student = await studentData.findById(req.id).exec()
-//     student.password = req.body.password
-//     await student.save()
 
-// SendToken(student, 201, res)
+ exports.employeeresetpassword = CatchAsyncError(async (req,res,next)=>{
+
+    const employee = await employeeData.findById(req.id).exec()
+    employee.password = req.body.password
+    await employee.save()
+
+SendToken(employee, 201, res)
     
 
-//  }) 
+ }) 
 
 
-//  exports.studentupdate = CatchAsyncError(async (req,res,next)=>{
+ exports.employeeupdate = CatchAsyncError(async (req,res,next)=>{
 
-//       const student = await studentData.findByIdAndUpdate(req.params.id, req.body).exec()
-//     res.status(200).json({
-//         success: true,
-//         message: "Student updated successfully",
-// student
-//     })
-// } ) 
-
-
-
-// exports. studentavatar = CatchAsyncError(async (req,res,next)=>{
-//     const student = await studentData.findById(req.params.id).exec()
-// const file = req.files.avatar
-// const modifiedFileName = `resumebuilder-${Date.now()}${path.extname(file.name)}`
-
-// if(student.avatar.fileId !== ""){
-//     await imagekit.deleteFile(student.avatar.fileId)
-// }
+      const employee = await employeeData.findByIdAndUpdate(req.params.id, req.body).exec()
+    res.status(200).json({
+        success: true,
+        message: "Student updated successfully",
+        employee
+    })
+} ) 
 
 
-// const {fileId, url} = await imagekit.upload({file: file.data, fileName: modifiedFileName })
-// student.avatar = {fileId, url}
-// await student.save()
-// res.status(200).json({
-//     success: true,
-//     message: "Profile updated"
-// })
-// // res.json({ image })
+
+exports.employeeavatar = CatchAsyncError(async (req,res,next)=>{
+    const employee = await employeeData.findById(req.params.id).exec()
+const file = req.files.organizationlogo
+const modifiedFileName = `resumebuilder-${Date.now()}${path.extname(file.name)}`
+
+if(employee.organizationlogo.fileId !== ""){
+    await imagekit.deleteFile(employee.organizationlogo.fileId)
+}
 
 
-// } ) 
+const {fileId, url} = await imagekit.upload({file: file.data, fileName: modifiedFileName })
+employee.organizationlogo = {fileId, url}
+await employee.save()
+res.status(200).json({
+    success: true,
+    message: "Profile updated"
+})
+// res.json({ image })
+
+
+} ) 
