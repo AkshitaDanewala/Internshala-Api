@@ -2,6 +2,9 @@ const mongoose = require("mongoose")
 
 const JobModel = new mongoose.Schema({
 
+
+    job: {type: mongoose.Schema.Types.ObjectId, ref: "job",},
+
 Jobtitle: String,
 JobType: {
     type: String,

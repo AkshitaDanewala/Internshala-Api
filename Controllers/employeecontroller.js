@@ -145,6 +145,27 @@ res.status(200).json({
 
 exports.internshipcreate = CatchAsyncError(async (req,res,next)=>{
 
-    const internship = await new internshipData(req.body).save()
+    const employee = await employeeData.findById(req.id).exec()
+    const internship = await new internshipData(req.body)
+    internship.employee = employee._id
+    employee.internships.push(internship._id)
+    await internship.save()
+   await employee.save()
     res.status(201).json({ success: true, internship})
+} ) 
+
+
+exports.internshipread = CatchAsyncError(async (req,res,next)=>{
+
+    const internship = await  internshipData.find().exec()
+    res.status(200).json({ success: true, internship})
+} ) 
+
+
+exports.internshipsingleread = CatchAsyncError(async (req,res,next)=>{
+
+    // const internship = await  internshipData.findById(req.params.id).exec()
+    const {internships} = await employeeData.findById(req.id).populate("internships").exec()
+
+    res.status(200).json({ success: true, internships})
 } ) 
