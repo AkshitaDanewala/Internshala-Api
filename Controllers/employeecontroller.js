@@ -1,6 +1,7 @@
 
 const {CatchAsyncError} = require("../Middleware/CatchAsyncError")
 const employeeData = require("../Models/EmployeeModel.js")
+const internshipData = require("../Models/internshipModel.js")
 const ErrorHandler = require("../utils/ErrorHandler")
 const {SendToken} = require("../utils/SendToken")
 const {sendmail} = require("../utils/Nodemailer.js")
@@ -136,4 +137,14 @@ res.status(200).json({
 // res.json({ image })
 
 
+} ) 
+
+
+// ----------------------internship-----------------------------------------
+
+
+exports.internshipcreate = CatchAsyncError(async (req,res,next)=>{
+
+    const internship = await new internshipData(req.body).save()
+    res.status(201).json({ success: true, internship})
 } ) 

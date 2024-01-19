@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const {homepage, employeesignup, employeesignin, employeesignout, currentemployee,employeesendmail, employeeforgetlink, employeeresetpassword, employeeupdate, employeeavatar} = require("../Controllers/employeecontroller.js")
+const {homepage, employeesignup, employeesignin, employeesignout, currentemployee,employeesendmail, employeeforgetlink, employeeresetpassword, employeeupdate, employeeavatar, internshipcreate} = require("../Controllers/employeecontroller.js")
 const {isAuthenticated} = require("../Middleware/Auth.js")
 
 //GET / route
@@ -35,15 +35,23 @@ router.get("/forget-link/:id",   employeeforgetlink)
 router.post("/reset-password/:id", isAuthenticated,  employeeresetpassword)
 
 
-// //POST update route
+//POST update route
 
 router.post("/update/:id", isAuthenticated,  employeeupdate)
 
 
 
-// //POST student/avatar/:studentid
+//POST student/avatar/:studentid
 router.post("/avatar/:id", isAuthenticated,  employeeavatar)
 
+
+
+
+// ----------------------internship-----------------------------------------
+
+
+ //POST/employee/internship/create
+router.post("/internship/create", isAuthenticated,  internshipcreate)
 
 
 module.exports = router
