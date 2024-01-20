@@ -2,6 +2,7 @@
 const {CatchAsyncError} = require("../Middleware/CatchAsyncError")
 const employeeData = require("../Models/EmployeeModel.js")
 const internshipData = require("../Models/internshipModel.js")
+const JobModelData = require("../Models/jobModel.js")
 const ErrorHandler = require("../utils/ErrorHandler")
 const {SendToken} = require("../utils/SendToken")
 const {sendmail} = require("../utils/Nodemailer.js")
@@ -143,29 +144,59 @@ res.status(200).json({
 // ----------------------internship-----------------------------------------
 
 
-exports.internshipcreate = CatchAsyncError(async (req,res,next)=>{
 
+exports.internshipcreate = CatchAsyncError(async (req,res,next)=>{
     const employee = await employeeData.findById(req.id).exec()
     const internship = await new internshipData(req.body)
     internship.employee = employee._id
     employee.internships.push(internship._id)
     await internship.save()
-   await employee.save()
-    res.status(201).json({ success: true, internship})
+     await employee.save()
+    res.status(201).json({success: true, internship})
 } ) 
 
 
-exports.internshipread = CatchAsyncError(async (req,res,next)=>{
 
-    const internship = await  internshipData.find().exec()
-    res.status(200).json({ success: true, internship})
+exports.internshipread = CatchAsyncError(async (req,res,next)=>{
+    const {internship} = await employeeData.findById(req.id).populate("internships").exec()
+    res.status(200).json({success: true, internship})
 } ) 
 
 
 exports.internshipsingleread = CatchAsyncError(async (req,res,next)=>{
 
-    // const internship = await  internshipData.findById(req.params.id).exec()
-    const {internships} = await employeeData.findById(req.id).populate("internships").exec()
+    const internship = await internshipData.findById(req.params.id).exec()
+    res.status(200).json({success: true, internship})
+} ) 
 
-    res.status(200).json({ success: true, internships})
+
+
+
+
+
+// ----------------------jobs-----------------------------------------
+
+
+exports.jobscreate = CatchAsyncError(async (req,res,next)=>{
+    const employee = await employeeData.findById(req.id).exec()
+    const job = await new JobModelData(req.body)
+    job.employee = employee._id
+    employee.jobs.push(job._id)
+    await job.save()
+     await employee.save()
+    res.status(201).json({success: true, job})
+} ) 
+
+
+
+exports.jobsread = CatchAsyncError(async (req,res,next)=>{
+    const { job } = await employeeData.findById(req.id).populate("jobs").exec()
+    res.status(200).json({success: true, job})
+} ) 
+
+
+exports.jobssingleread = CatchAsyncError(async (req,res,next)=>{
+
+    const job = await JobModelData.findById(req.params.id).exec()
+    res.status(200).json({success: true, job})
 } ) 
