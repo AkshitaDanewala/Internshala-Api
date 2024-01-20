@@ -1,6 +1,8 @@
 
 const {CatchAsyncError} = require("../Middleware/CatchAsyncError")
 const studentData = require("../Models/StudentModel")
+const internshipData = require("../Models/internshipModel.js")
+const JobModelData = require("../Models/jobModel.js")
 const ErrorHandler = require("../utils/ErrorHandler")
 const {SendToken} = require("../utils/SendToken")
 const {sendmail} = require("../utils/Nodemailer.js")
@@ -115,6 +117,22 @@ student
 
 
 
+exports.studentdelete = CatchAsyncError(async (req,res,next)=>{
+
+    const student = await studentData.findByIdAndDelete(req.params.id).exec()
+    const internship = await internshipData.findByIdAndDelete(req.params.id).exec()
+    const job = await JobModelData.findByIdAndDelete(req.params.id).exec()
+  res.status(200).json({
+      success: true,
+      message: "Student deleted successfully",
+student, internship, job
+  })
+} ) 
+
+
+
+
+
 exports. studentavatar = CatchAsyncError(async (req,res,next)=>{
     const student = await studentData.findById(req.params.id).exec()
 const file = req.files.avatar
@@ -135,4 +153,37 @@ res.status(200).json({
 // res.json({ image })
 
 
+} ) 
+
+
+
+// -------------------- apply internship--------------------------------
+
+
+exports.applyinternship = CatchAsyncError(async (req,res,next)=>{
+
+    const student = await studentData.findById(req.id).exec()
+    const internship = await internshipData.findById(req.params.internshipid).exec()
+
+    student.internships.push(internship._id)
+    internship.students.push(student._id)
+ await student.save()
+ await internship.save()
+    res.json({student, internship})
+} ) 
+
+
+
+// -------------------- apply job--------------------------------
+
+exports.applyjob = CatchAsyncError(async (req,res,next)=>{
+
+    const student = await studentData.findById(req.id).exec()
+    const job = await JobModelData.findById(req.params.jobid).exec()
+
+    student.jobs.push(job._id)
+    job.students.push(student._id)
+ await student.save()
+ await job.save()
+    res.json({student, job})
 } ) 
